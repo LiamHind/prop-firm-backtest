@@ -1,0 +1,93 @@
+[experiment]
+name = "mes_topstep_momentum"
+output_dir = "outputs"
+random_seed = 7
+variant = "baseline"
+
+[data]
+path = "data/mes_1m.csv"
+format = "csv"
+instrument = "MES"
+source_timezone = "UTC"
+exchange_timezone = "America/New_York"
+session_start = "09:00"
+session_end = "16:00"
+event_calendar_path = "examples/macro_events.csv"
+exclude_event_tags = ["CPI", "FOMC", "NFP"]
+
+[split]
+enabled = true
+in_sample_start = "2022-01-01"
+in_sample_end = "2023-12-31"
+out_of_sample_start = "2024-01-01"
+out_of_sample_end = "2025-12-31"
+
+[strategy]
+family = "momentum_pullback"
+session_start = "09:30"
+session_end = "11:00"
+contracts = 1
+point_value = 5.0
+commission_per_contract = 0.62
+slippage_points_per_side = 0.125
+higher_timeframe_minutes = 30
+higher_timeframe_lookback = 4
+vwap_slope_lookback = 5
+pullback_lookback_bars = 3
+pullback_touch_tolerance_atr = 0.35
+confirmation_lookback_bars = 1
+atr_period = 14
+stop_atr = 1.0
+target_r = 2.0
+trailing = false
+trailing_r = 1.0
+max_trades_per_day = 2
+daily_stop = -300.0
+daily_profit_cap = 500.0
+intrabar_fill_priority = "stop_first"
+
+[topstep]
+account_label = "50K"
+base_profit_target = 3000.0
+max_loss_buffer = 2000.0
+max_position_size = 5
+loss_limit_mode = "trailing_balance"
+consistency_threshold = 0.5
+consistency_buffer = 1.0
+model_daily_loss_limit = false
+monthly_subscription_fee = 49.0
+trading_days_per_month = 21
+
+[monte_carlo]
+enabled = true
+iterations = 250
+trade_shuffle = true
+day_bootstrap = true
+week_bootstrap = true
+regime_bootstrap = true
+block_size_days = 5
+
+[reporting]
+save_trade_csv = true
+save_daily_csv = true
+save_markdown = true
+save_json = true
+make_charts = true
+
+[benchmarks.random_entry]
+enabled = true
+
+[benchmarks.breakout]
+enabled = true
+lookback_bars = 20
+
+[benchmarks.mean_reversion]
+enabled = true
+distance_from_vwap_atr = 1.0
+
+[metadata]
+assumed_pass_value = 0.0
+
+[sweep]
+"strategy.stop_atr" = [0.8, 1.0, 1.2]
+"strategy.target_r" = [1.5, 2.0, 2.5]

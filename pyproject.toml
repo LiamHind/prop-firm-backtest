@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "topstep-research"
+version = "0.1.0"
+description = "Topstep combine research and simulation framework for intraday futures strategies."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+  "numpy>=1.26",
+  "pandas>=2.0",
+]
+
+[project.optional-dependencies]
+charts = ["matplotlib>=3.8"]
+
+[project.scripts]
+topstep-research = "topstep_research.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
